@@ -2,11 +2,14 @@ import { lazy } from 'react'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom'
 import { ROUTES_ADMIN } from '@/config/routes'
 
+const Login = lazy(() => import('@/pages/Admin/Auth/Login'))
+
 const MainLayout = lazy(() => import('@/components/Layouts/Admin/MainLayout'))
 const Dashboard = lazy(() => import('@/pages/Admin/Dashboard'))
 
 const router = createBrowserRouter([
   {
+    path: ROUTES_ADMIN.HOME,
     element: <MainLayout />,
     children: [
       {
@@ -15,12 +18,14 @@ const router = createBrowserRouter([
       },
     ],
   },
+  {
+    path: ROUTES_ADMIN.AUTH.LOGIN,
+    element: <Login />,
+  },
 ])
 
-export function Routes() {
-  return (
-    <div>
-      <RouterProvider router={router} />
-    </div>
-  )
+const Routes = () => {
+  return <RouterProvider router={router} />
 }
+
+export default Routes
