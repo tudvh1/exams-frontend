@@ -8,10 +8,11 @@ const MainLayoutAdmin = lazy(() => import('@/components/Layouts/Admin/MainLayout
 const Dashboard = lazy(() => import('@/pages/Admin/Dashboard'))
 
 // User
-const MainLayout = lazy(() => import('@/components/Layouts/Site/MainLayout'))
 const AuthLayout = lazy(() => import('@/components/Layouts/Site/AuthLayout'))
 const Login = lazy(() => import('@/pages/Site/Auth/Login'))
 const Register = lazy(() => import('@/pages/Site/Auth/Register'))
+const Verify = lazy(() => import('@/pages/Site/Auth/Verify'))
+const MainLayout = lazy(() => import('@/components/Layouts/Site/MainLayout'))
 const Home = lazy(() => import('@/pages/Site/Home'))
 
 const router = createBrowserRouter([
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
       {
         path: ROUTES_SITE.AUTH.REGISTER,
         element: <Register />,
+      },
+      {
+        path: ROUTES_SITE.AUTH.VERIFY,
+        element: <Verify />,
       },
     ],
   },
