@@ -23,3 +23,7 @@ export type RegisterPayloads = {
   email: string | null
   password: string | null
 }
+
+export type VerifyPayload = {
+  token: string | null
+}
