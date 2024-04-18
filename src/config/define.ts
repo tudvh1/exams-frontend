@@ -30,3 +30,9 @@ export const ROLE = {
   STUDENT: 'STUDENT',
   TEACHER: 'TEACHER',
 }
+
+export const AUTH_VERIFY_STATUS = {
+  LOADING: 'loading',
+  NOT_VERIFIED: 'not-verified',
+  VERIFIED: 'verified',
+}
