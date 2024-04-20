@@ -18,7 +18,7 @@ import { useNavigate } from 'react-router-dom'
 import { ROUTES_ADMIN } from '@/config/routes'
 import { setErrorForInput } from '@/utils/handleErrors'
 
-const defaultValues = {
+const defaultValues: LoginPayloads = {
   email: '',
   password: '',
 }
