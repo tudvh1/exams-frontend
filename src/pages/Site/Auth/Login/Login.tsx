@@ -11,7 +11,7 @@ import useHandleError from '@/hooks/useHandleError'
 import { GoogleLogin } from '@react-oauth/google'
 import { jwtDecode } from 'jwt-decode'
 
-const defaultValues = {
+const defaultValues: LoginPayloads = {
   email: '',
   password: '',
 }
