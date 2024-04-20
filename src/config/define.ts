@@ -36,3 +36,26 @@ export const AUTH_VERIFY_STATUS = {
   NOT_VERIFIED: 'not-verified',
   VERIFIED: 'verified',
 }
+
+export const TEACHER_STATUS_LIST = [
+  {
+    id: 1,
+    name: 'Chờ xác nhận',
+    value: 'WAIT_VERIFY',
+  },
+  {
+    id: 2,
+    name: 'Đang hoạt động',
+    value: 'ACTIVE',
+  },
+  {
+    id: 3,
+    name: 'Riêng tư',
+    value: 'BLOCK',
+  },
+  {
+    id: 4,
+    name: 'Bị khóa',
+    value: 'ADMIN_BLOCK',
+  },
+]
