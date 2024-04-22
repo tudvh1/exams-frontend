@@ -16,8 +16,8 @@ const Table = (props: TableProps) => {
     showHeader = true,
     customNullDataText,
     onSort = () => {},
-    sortColumn,
-    sortType,
+    defaultSortColumn,
+    defaultSortType,
   } = props
   const { lastPage, total, currentPage } = pagination || {}
   const [sortOrder, setSortOrder] = useState<TSortOrder>({})
@@ -36,10 +36,10 @@ const Table = (props: TableProps) => {
 
   useEffect(() => {
     setSortOrder({
-      sort_column: sortColumn,
-      sort_type: sortType,
+      sort_column: defaultSortColumn,
+      sort_type: defaultSortType,
     })
-  }, [sortColumn, sortType])
+  }, [defaultSortColumn, defaultSortType])
 
   return (
     <div className={`space-y-5 ${classNameLayout}`}>

@@ -22,3 +22,13 @@ export type StudentSearchFormProps = {
   onReset?: () => void
   onSearch?: () => void
 }
+
+export type StudentUpdateStatusProps = {
+  student: TStudent
+  currentPage: number
+  fetchStudents: (...args: any) => void
+}
+
+export type StudentUpdateStatusPayloads = {
+  reason: string
+}
