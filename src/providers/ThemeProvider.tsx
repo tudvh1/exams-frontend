@@ -19,20 +19,22 @@ const ThemeProvider = (props: ThemeProviderProps) => {
   )
 
   useEffect(() => {
-    const root = window.document.documentElement
+    function setRootTheme(theme: Theme) {
+      const root = window.document.documentElement
+      root.classList.remove('light', 'dark')
 
-    root.classList.remove('light', 'dark')
-
-    if (theme === 'system') {
-      const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
-        ? 'dark'
-        : 'light'
-
-      root.classList.add(systemTheme)
-      return
+      if (theme === 'system') {
+        const systemTheme = window.matchMedia('(prefers-color-scheme: dark)').matches
+          ? 'dark'
+          : 'light'
+        root.classList.add(systemTheme)
+      } else {
+        root.classList.add(theme)
+      }
     }
 
-    root.classList.add(theme)
+    state.setState(storageKey, theme)
+    setRootTheme(theme)
   }, [theme])
 
   return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>

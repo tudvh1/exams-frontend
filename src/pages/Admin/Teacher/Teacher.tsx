@@ -7,7 +7,7 @@ import { useSidebarActive } from '@/contexts/sidebarActive'
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
 import useHandleError from '@/hooks/useHandleError'
 import teacherService from '@/services/admin/teacherService'
-import { TSetPagination, TTableColumn } from '@/types'
+import { TSetPagination, TSortOrder, TTableColumn } from '@/types'
 import { TTeacher, TeacherSearchParams } from '@/types/admin'
 import { setPaginationData } from '@/utils/pagination'
 import SearchForm from './SearchForm'
@@ -35,6 +35,7 @@ function Teacher() {
     {
       headerName: 'ID',
       field: 'id',
+      sortable: true,
     },
     {
       headerName: 'Họ và tên lót',
@@ -43,10 +44,12 @@ function Teacher() {
     {
       headerName: 'Tên',
       field: 'first_name',
+      sortable: true,
     },
     {
       headerName: 'Ngày sinh',
       field: 'dob',
+      sortable: true,
     },
     {
       headerName: 'Email',
@@ -67,7 +70,7 @@ function Teacher() {
           <UpdateStatus
             teacher={row}
             fetchTeachers={debouncedFetchTeachers}
-            currentPage={pagination.currentPage}
+            currentPage={pagination.currentPage ?? 1}
           />
         )
       },
@@ -105,6 +108,12 @@ function Teacher() {
     debouncedFetchTeachers()
   }
 
+  const sort = (dataSort: TSortOrder) => {
+    const dataTemp = { ...dataSearch, ...dataSort }
+    setDataSearch(dataTemp)
+    debouncedFetchTeachers(dataTemp)
+  }
+
   useEffect(() => {
     setSidebarActive(ROUTES_ADMIN.TEACHER)
     debouncedFetchTeachers()
@@ -124,6 +133,9 @@ function Teacher() {
           columns={columns}
           rows={teachers}
           pagination={pagination}
+          defaultSortColumn={defaultValueDataSearch.sort_column}
+          defaultSortType={defaultValueDataSearch.sort_type}
+          onSort={sort}
           handleChangePage={selected => handleChangePage(selected)}
         />
       </div>

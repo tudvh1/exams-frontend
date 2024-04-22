@@ -12,7 +12,7 @@ import ThemeProvider from './providers/ThemeProvider'
 function App() {
   return (
     <>
-      <ThemeProvider defaultTheme="light" storageKey="theme">
+      <ThemeProvider>
         <LoadingProvider>
           <GoogleOAuthProvider clientId={appConfig.google.clientId}>
             <SidebarActiveProvider>
