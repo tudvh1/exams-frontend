@@ -66,3 +66,18 @@ export const TEACHER_STATUS_LIST_OPTIONS = [
     value: TeacherStatus.AdminBlock,
   },
 ]
+
+export const THEMES = {
+  light: {
+    iconClassName: 'fa-solid fa-sun-bright',
+    text: 'Sáng',
+  },
+  dark: {
+    iconClassName: 'fa-solid fa-moon-stars',
+    text: 'Tối',
+  },
+  system: {
+    iconClassName: 'fa-solid fa-circle-half-stroke',
+    text: 'Mặc định hệ thống',
+  },
+}

@@ -12,6 +12,59 @@ const defaultValues: UpdateTeacherStatusPayloads = {
   reason: '',
 }
 
+const TeacherAction = (props: any) => {
+  const {
+    buttonClassName,
+    buttonText,
+    modalTitle,
+    modalDescription,
+    showModal,
+    setShowModal,
+    onSubmit,
+    reset,
+    defaultValues,
+    control,
+    reasonError,
+  } = props
+
+  return (
+    <>
+      <Button className={buttonClassName} onClick={() => setShowModal(true)}>
+        {buttonText}
+      </Button>
+      <Modal
+        show={showModal}
+        close={() => {
+          setShowModal(false)
+        }}
+        afterLeave={() => {
+          reset(defaultValues)
+        }}
+      >
+        <form className="space-y-6" onSubmit={onSubmit}>
+          <div className="mb-8">
+            <h1 className="text-3xl font-medium text-center text-foreground">{modalTitle}</h1>
+            <p className="!mt-0 text-center text-sm font-light text-foreground">
+              {modalDescription}
+            </p>
+          </div>
+          <div className="grid grid-cols-1 gap-4">
+            <Input
+              placeholder="Lý do"
+              label="Lý do"
+              name="reason"
+              control={control}
+              error={reasonError}
+              autoComplete="off"
+            />
+            <Button>Xác nhận</Button>
+          </div>
+        </form>
+      </Modal>
+    </>
+  )
+}
+
 function UpdateStatus(props: any) {
   const { teacher, currentPage, fetchTeachers } = props
   const { showLoading, hideLoading } = useLoading()
@@ -69,82 +122,34 @@ function UpdateStatus(props: any) {
   switch (teacher.status) {
     case TeacherStatus.Active:
       return (
-        <>
-          <Button
-            className="bg-red-600 hover:bg-red-500"
-            onClick={() => setIsShowConfirmBanTeacherModal(true)}
-          >
-            <i className="fa-solid fa-ban"></i>
-          </Button>
-          <Modal
-            show={isShowConfirmBanTeacherModal}
-            close={() => {
-              setIsShowConfirmBanTeacherModal(false)
-            }}
-          >
-            <form className="space-y-6" onSubmit={handleSubmit(banTeacher)}>
-              <div className="mb-8">
-                <h1 className="text-3xl font-medium text-center">
-                  Bạn có chắc muốn cấm giáo viên này?
-                </h1>
-                <p className="!mt-0 text-center text-sm font-light">
-                  Nếu bạn muốn cấm giáo viên này. Vui lòng ghi lý do ở dưới
-                </p>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                <Input
-                  placeholder="Lý do"
-                  label="Lý do"
-                  name="reason"
-                  control={control}
-                  error={reasonError}
-                  autoComplete="off"
-                />
-                <Button>Xác nhận</Button>
-              </div>
-            </form>
-          </Modal>
-        </>
+        <TeacherAction
+          buttonClassName="bg-red-600 hover:bg-red-600/90"
+          buttonText={<i className="fa-solid fa-ban"></i>}
+          modalTitle="Bạn có chắc muốn cấm giáo viên này?"
+          modalDescription="Nếu bạn muốn cấm giáo viên này. Vui lòng ghi lý do ở dưới"
+          showModal={isShowConfirmBanTeacherModal}
+          setShowModal={setIsShowConfirmBanTeacherModal}
+          onSubmit={handleSubmit(banTeacher)}
+          reset={reset}
+          defaultValues={defaultValues}
+          control={control}
+          reasonError={reasonError}
+        />
       )
     case TeacherStatus.AdminBlock:
       return (
-        <>
-          <Button
-            onClick={() => {
-              setIsShowConfirmUnBanTeacherModal(true)
-            }}
-          >
-            <i className="fa-solid fa-unlock"></i>
-          </Button>
-          <Modal
-            show={isShowConfirmUnBanTeacherModal}
-            close={() => {
-              setIsShowConfirmUnBanTeacherModal(false)
-            }}
-          >
-            <form className="space-y-6" onSubmit={handleSubmit(unBanTeacher)}>
-              <div className="mb-8">
-                <h1 className="text-3xl font-medium text-center">
-                  Bạn có chắc muốn ân xá giáo viên này?
-                </h1>
-                <p className="!mt-0 text-center text-sm font-light">
-                  Nếu bạn muốn ân xá giáo viên này. Vui lòng ghi lý do ở dưới
-                </p>
-              </div>
-              <div className="grid grid-cols-1 gap-4">
-                <Input
-                  placeholder="Lý do"
-                  label="Lý do"
-                  name="reason"
-                  control={control}
-                  error={reasonError}
-                  autoComplete="off"
-                />
-                <Button>Xác nhận</Button>
-              </div>
-            </form>
-          </Modal>
-        </>
+        <TeacherAction
+          buttonText={<i className="fa-solid fa-unlock"></i>}
+          modalTitle="Bạn có chắc muốn ân xá giáo viên này?"
+          modalDescription="Nếu bạn muốn ân xá giáo viên này. Vui lòng ghi lý do ở dưới"
+          showModal={isShowConfirmUnBanTeacherModal}
+          setShowModal={setIsShowConfirmUnBanTeacherModal}
+          onSubmit={handleSubmit(unBanTeacher)}
+          reset={reset}
+          defaultValues={defaultValues}
+          control={control}
+          reasonError={reasonError}
+        />
       )
   }
 }
