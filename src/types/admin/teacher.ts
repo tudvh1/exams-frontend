@@ -23,6 +23,12 @@ export type TeacherSearchFormProps = {
   onSearch?: () => void
 }
 
-export type UpdateTeacherStatusPayloads = {
+export type TeacherUpdateStatusProps = {
+  teacher: TTeacher
+  currentPage: number
+  fetchTeachers: (...args: any) => void
+}
+
+export type TeacherUpdateStatusPayloads = {
   reason: string
 }
