@@ -15,5 +15,9 @@ export const ROUTES_SITE = {
     VERIFY: '/auth/verify',
     LOGIN_GOOGLE_CALLBACK: '/auth/google/callback',
   },
+  TEACHER: {
+    HOME: '/teacher',
+    DASHBOARD: '/teacher/dashboard',
+  },
   HOME: '/',
 }
