@@ -1,10 +1,8 @@
 import { Link } from 'react-router-dom'
 import { ROUTES_SITE } from '@/config/routes'
 import { useSidebarActive } from '@/contexts/sidebarActive'
-import { useLoading } from '@/contexts/loading'
 import { SidebarProps } from '@/types/admin'
 import { cn } from '@/lib/utils'
-import { useAuth } from '@/contexts/auth'
 
 const NAV_ITEMS = [
   {
@@ -18,15 +16,6 @@ const NAV_ITEMS = [
 const Sidebar = (props: SidebarProps) => {
   const { isShowSidebar, hideSidebar } = props
   const { sidebarActive } = useSidebarActive()
-  const { showLoading, hideLoading } = useLoading()
-  const { authLogout } = useAuth()
-
-  const logout = () => {
-    showLoading()
-    authLogout().finally(() => {
-      hideLoading()
-    })
-  }
 
   return (
     <aside
@@ -65,16 +54,16 @@ const Sidebar = (props: SidebarProps) => {
           )
         })}
         <li>
-          <button
+          <Link
             type="button"
             className="flex w-full items-center gap-3 text-md px-4 py-2.5 rounded text-primary-foreground hover:bg-accent hover:text-secondary-foreground dark:text-card-foreground"
-            onClick={logout}
+            to={ROUTES_SITE.HOME}
           >
             <div className="flex justify-center items-center text-xl w-7">
               <i className="fa-light fa-right-from-bracket"></i>
             </div>
-            <p>Đăng xuất</p>
-          </button>
+            <p>Thoát</p>
+          </Link>
         </li>
       </ul>
     </aside>
