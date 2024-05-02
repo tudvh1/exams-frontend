@@ -2,11 +2,11 @@ import { useEffect, useState } from 'react'
 import { Outlet, useNavigate } from 'react-router-dom'
 import { useAuth } from '@/contexts/auth'
 import { ROUTES_SITE } from '@/config/routes'
-import { Header, Sidebar } from '@/components/Partials/Site/Teacher'
+import { Header, Sidebar } from '@/components/Partials/Teacher'
 import { ROLE } from '@/config/define'
 import { Toast } from '@/components/ui'
 
-const TeacherLayout = () => {
+const MainLayout = () => {
   const { authToken, authProfile } = useAuth()
   const [isShowSidebar, setIsShowSidebar] = useState(false)
   const [isChecking, setIsChecking] = useState(true)
@@ -49,4 +49,4 @@ const TeacherLayout = () => {
   )
 }
 
-export default TeacherLayout
+export default MainLayout

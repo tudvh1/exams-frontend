@@ -6,7 +6,7 @@ import {
   DropdownMenuTrigger,
   ToggleTheme,
 } from '@/components/ui'
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_SITE, ROUTES_TEACHER } from '@/config/routes'
 import { Link } from 'react-router-dom'
 import viteLogo from '/vite.svg'
 import { useAuth } from '@/contexts/auth'
@@ -48,10 +48,7 @@ function Header() {
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-fit">
             <DropdownMenuItem>
-              <Link
-                to={ROUTES_SITE.TEACHER.HOME}
-                className="w-full flex items-center gap-3 text-base"
-              >
+              <Link to={ROUTES_TEACHER.HOME} className="w-full flex items-center gap-3 text-base">
                 <div className="flex justify-center items-center w-6">
                   <i className="fa-solid fa-chalkboard-user"></i>
                 </div>
