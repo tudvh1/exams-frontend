@@ -19,6 +19,12 @@ export const ROUTES_SITE = {
   TEACHER: {
     HOME: '/teacher',
     DASHBOARD: '/teacher/dashboard',
+    CLASSROOM: {
+      INDEX: '/teacher/classrooms',
+      UPDATE: '/teacher/classrooms/:id',
+      STUDENTS: '/teacher/classrooms/:id/students',
+      KEYS: '/teacher/classrooms/:id/keys',
+    },
   },
   HOME: '/',
 }

@@ -13,6 +13,12 @@ const NAV_ITEMS = [
     iconActive: 'fa-solid fa-gauge-max',
     text: 'Dashboard',
   },
+  {
+    to: ROUTES_SITE.TEACHER.CLASSROOM.INDEX,
+    icon: 'fa-light fa-gauge-max',
+    iconActive: 'fa-solid fa-gauge-max',
+    text: 'Lớp học',
+  },
 ]
 
 const Sidebar = (props: SidebarProps) => {

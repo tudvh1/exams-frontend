@@ -2,7 +2,13 @@ import { ROUTES_SITE } from '@/config/routes'
 import { MainLayout, AuthLayout, TeacherLayout } from '@/components/Layouts/Site'
 import { Login, Register, Verify } from '@/pages/Site/Auth'
 import { Home } from '@/pages/Site'
-import { Dashboard } from '@/pages/Site/Teacher'
+import {
+  Dashboard,
+  Classroom,
+  ClassroomUpdate,
+  ClassroomStudents,
+  ClassroomKey,
+} from '@/pages/Site/Teacher'
 
 const siteRoute = [
   {
@@ -22,6 +28,22 @@ const siteRoute = [
       {
         path: ROUTES_SITE.TEACHER.DASHBOARD,
         element: <Dashboard />,
+      },
+      {
+        path: ROUTES_SITE.TEACHER.CLASSROOM.INDEX,
+        element: <Classroom />,
+      },
+      {
+        path: ROUTES_SITE.TEACHER.CLASSROOM.UPDATE,
+        element: <ClassroomUpdate />,
+      },
+      {
+        path: ROUTES_SITE.TEACHER.CLASSROOM.STUDENTS,
+        element: <ClassroomStudents />,
+      },
+      {
+        path: ROUTES_SITE.TEACHER.CLASSROOM.KEYS,
+        element: <ClassroomKey />,
       },
     ],
   },
