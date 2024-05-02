@@ -5,7 +5,7 @@ import {
   DEFAULT_PAGINATION_OBJECT,
   SORT_TYPE,
 } from '@/config/define'
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_TEACHER } from '@/config/routes'
 import { useLoading } from '@/contexts/loading'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
@@ -76,10 +76,7 @@ function Classroom() {
       field: 'action',
       valueGetter: row => {
         return (
-          <Link
-            to={ROUTES_SITE.TEACHER.CLASSROOM.UPDATE.replace(':id', row.id)}
-            className="underline"
-          >
+          <Link to={ROUTES_TEACHER.CLASSROOM.UPDATE.replace(':id', row.id)} className="underline">
             <Button>
               <i className="fa-sharp fa-solid fa-eye"></i>
             </Button>
@@ -127,7 +124,7 @@ function Classroom() {
   }
 
   useEffect(() => {
-    setSidebarActive(ROUTES_SITE.TEACHER.CLASSROOM.INDEX)
+    setSidebarActive(ROUTES_TEACHER.CLASSROOM.INDEX)
     debouncedFetchClassrooms()
   }, [])
 

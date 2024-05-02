@@ -1,18 +1,18 @@
 import { Link } from 'react-router-dom'
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_SITE, ROUTES_TEACHER } from '@/config/routes'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 import { SidebarProps } from '@/types/admin'
 import { cn } from '@/lib/utils'
 
 const NAV_ITEMS = [
   {
-    to: ROUTES_SITE.TEACHER.DASHBOARD,
+    to: ROUTES_TEACHER.DASHBOARD,
     icon: 'fa-light fa-gauge-max',
     iconActive: 'fa-solid fa-gauge-max',
     text: 'Dashboard',
   },
   {
-    to: ROUTES_SITE.TEACHER.CLASSROOM.INDEX,
+    to: ROUTES_TEACHER.CLASSROOM.INDEX,
     icon: 'fa-light fa-gauge-max',
     iconActive: 'fa-solid fa-gauge-max',
     text: 'Lớp học',
@@ -30,10 +30,7 @@ const Sidebar = (props: SidebarProps) => {
         isShowSidebar ? 'ml-0' : '-ml-64',
       )}
     >
-      <Link
-        to={ROUTES_SITE.TEACHER.DASHBOARD}
-        className="px-2 py-2.5 block w-100 border-b text-center"
-      >
+      <Link to={ROUTES_TEACHER.DASHBOARD} className="px-2 py-2.5 block w-100 border-b text-center">
         <span className="text-primary-foreground dark:text-card-foreground text-3xl font-bold">
           Exams Teacher
         </span>

@@ -1,12 +1,12 @@
 import { useEffect } from 'react'
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_TEACHER } from '@/config/routes'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 
 function Dashboard() {
   const { setSidebarActive } = useSidebarActive()
 
   useEffect(() => {
-    setSidebarActive(ROUTES_SITE.TEACHER.DASHBOARD)
+    setSidebarActive(ROUTES_TEACHER.DASHBOARD)
   }, [])
 
   return (

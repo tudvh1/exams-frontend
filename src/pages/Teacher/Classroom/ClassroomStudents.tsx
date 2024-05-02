@@ -1,12 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Alert, Badge, Button, Table, Toast } from '@/components/ui'
-import {
-  CLASSROOM_KEY_LIST_OPTIONS,
-  ClassroomKeyStatus,
-  DEFAULT_PAGINATION_OBJECT,
-  SORT_TYPE,
-} from '@/config/define'
-import { ROUTES_SITE } from '@/config/routes'
+import { ClassroomStudentStatus, DEFAULT_PAGINATION_OBJECT, SORT_TYPE } from '@/config/define'
+import { ROUTES_TEACHER } from '@/config/routes'
 import { useLoading } from '@/contexts/loading'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
@@ -17,9 +12,11 @@ import { ClassroomSearchParams } from '@/types/teacher'
 import classroomService from '@/services/site/teacher/classroomService'
 import SearchForm from './SearchForm'
 import { useParams } from 'react-router-dom'
+import { TStudent } from '@/types/admin'
 import Header from './Header'
+import { Tooltip } from 'react-tooltip'
+import { CLASSROOM_STUDENT_LIST_OPTIONS } from '@/config/define'
 import { getValueFromObjectByKey } from '@/utils/helper'
-import { TClassroomKey } from '@/types/teacher/classroomKey'
 
 const defaultValueDataSearch: ClassroomSearchParams = {
   name: '',
@@ -28,12 +25,12 @@ const defaultValueDataSearch: ClassroomSearchParams = {
   sort_type: SORT_TYPE.DESC,
 }
 
-function ClassroomKey() {
+function ClassroomStudents() {
   const { id } = useParams()
   const { setSidebarActive } = useSidebarActive()
   const { showLoading, hideLoading } = useLoading()
   const { handleResponseError } = useHandleError()
-  const [keys, setKeys] = useState<TClassroomKey[]>([])
+  const [students, setStudents] = useState<TStudent[]>([])
   const [pagination, setPagination] = useState<TSetPagination>(DEFAULT_PAGINATION_OBJECT)
   const [dataSearch, setDataSearch] = useState(defaultValueDataSearch)
 
@@ -44,30 +41,40 @@ function ClassroomKey() {
       sortable: true,
     },
     {
+      headerName: 'Họ và tên lót',
+      field: 'first_name',
+      sortable: true,
+    },
+    {
       headerName: 'Tên',
-      field: 'name',
+      field: 'last_name',
       sortable: true,
     },
     {
-      headerName: 'Mã',
-      field: 'key',
-    },
-    {
-      headerName: 'Số lượng',
-      field: 'quantity',
+      headerName: 'Ngày sinh',
+      field: 'dob',
       sortable: true,
     },
     {
-      headerName: 'Còn lại',
-      field: 'remaining',
-      sortable: true,
+      headerName: 'Mô tả',
+      field: 'description',
+      valueGetter: row => (
+        <>
+          <button id={`not-${row.id}`} className="text-2xl">
+            <i className="fa-light fa-circle-ellipsis"></i>
+          </button>
+          <Tooltip anchorSelect={`#not-${row.id}`} place="top-end">
+            <p className="max-w-28">{row.description}</p>
+          </Tooltip>
+        </>
+      ),
     },
     {
       headerName: 'Trạng thái',
       field: 'status',
       sortable: true,
       valueGetter: row => {
-        const status = getValueFromObjectByKey(CLASSROOM_KEY_LIST_OPTIONS, 'value', row.status)
+        const status = getValueFromObjectByKey(CLASSROOM_STUDENT_LIST_OPTIONS, 'value', row.status)
         return <Badge className={status?.badgeColor}>{status.name}</Badge>
       },
     },
@@ -75,24 +82,24 @@ function ClassroomKey() {
       headerName: 'Hành động',
       field: 'status',
       valueGetter: row =>
-        row.status === ClassroomKeyStatus.Active ? (
-          <Button className="bg-red-600 hover:bg-red-700" onClick={() => handleBlockKey(row)}>
+        row.status === ClassroomStudentStatus.Active ? (
+          <Button className="bg-red-600 hover:bg-red-700" onClick={() => handleBlockStudent(row)}>
             <i className="fa-solid fa-lock-keyhole"></i>
           </Button>
         ) : (
-          <Button onClick={() => handleActiveKey(row)}>
+          <Button onClick={() => handleActiveStudent(row)}>
             <i className="fa-solid fa-lock-keyhole-open"></i>
           </Button>
         ),
     },
   ]
 
-  const fetchClassroomKeys = (params?: any) => {
+  const fetchClassroomStudents = (params?: any) => {
     showLoading()
     classroomService
-      .keys(id, params)
+      .students(id, params)
       .then(({ data, meta }) => {
-        setKeys(data)
+        setStudents(data)
         setPagination(setPaginationData(meta ?? DEFAULT_PAGINATION_OBJECT))
       })
       .catch(err => {
@@ -102,82 +109,59 @@ function ClassroomKey() {
         hideLoading()
       })
   }
-  const debouncedFetchClassroomKeys = useDebouncedCallback(fetchClassroomKeys)
+  const debouncedFetchClassroomStudents = useDebouncedCallback(fetchClassroomStudents)
 
   const handleChangePage = (selected: number) => {
     setPagination({ ...pagination, currentPage: selected })
-    debouncedFetchClassroomKeys({ page: selected })
+    debouncedFetchClassroomStudents({ page: selected })
   }
 
   const search = () => {
-    debouncedFetchClassroomKeys({ ...dataSearch, page: 1 })
+    debouncedFetchClassroomStudents({ ...dataSearch, page: 1 })
   }
 
   const resetDataSearch = () => {
     setDataSearch(defaultValueDataSearch)
-    debouncedFetchClassroomKeys()
+    debouncedFetchClassroomStudents()
   }
 
   const sort = (dataSort: TSortOrder) => {
     const dataTemp = { ...dataSearch, ...dataSort }
     setDataSearch(dataTemp)
-    debouncedFetchClassroomKeys(dataTemp)
+    debouncedFetchClassroomStudents(dataTemp)
   }
 
-  const handleBlockKey = async (key: TClassroomKey) => {
+  const handleBlockStudent = async (student: TStudent) => {
     const check = await Alert.confirm(
-      `Bạn có nhưng hoạt động khóa ${key.name} không?`,
+      `Bạn có muốn cấm học sinh ${student.last_name} không?`,
       'Có',
       'Không',
     )
-    if (!check) {
-      return
+    if (check) {
+      Toast.success('Chưa làm ban')
     }
-
-    showLoading()
-    classroomService
-      .keyBlock(id, key.id)
-      .then(() => {
-        Toast.success('Vô hiệu hóa khóa thành công')
-        debouncedFetchClassroomKeys()
-      })
-      .catch(err => {
-        handleResponseError(err)
-      })
-      .finally(() => {
-        hideLoading()
-      })
   }
 
-  const handleActiveKey = async (key: TClassroomKey) => {
-    const check = await Alert.confirm(`Bạn có muốn mở khóa ${key?.name} không?`, 'Có', 'Không')
-    if (!check) {
-      return
+  const handleActiveStudent = async (student: TStudent) => {
+    const check = await Alert.confirm(
+      `Bạn có muốn ân xá học sinh ${student.last_name} không?`,
+      'Có',
+      'Không',
+    )
+    if (check) {
+      Toast.success('Chưa làm ân xá')
     }
-    showLoading()
-    classroomService
-      .keyActive(id, key.id)
-      .then(() => {
-        Toast.success('Mở key thành công')
-        debouncedFetchClassroomKeys()
-      })
-      .catch(err => {
-        handleResponseError(err)
-      })
-      .finally(() => {
-        hideLoading()
-      })
   }
 
   useEffect(() => {
-    setSidebarActive(ROUTES_SITE.TEACHER.CLASSROOM.INDEX)
-    debouncedFetchClassroomKeys()
+    setSidebarActive(ROUTES_TEACHER.CLASSROOM.INDEX)
+    debouncedFetchClassroomStudents()
   }, [])
 
   return (
     <div className="space-y-8">
       <Header />
-      <h1 className="text-3xl text-foreground">Danh sách mã vào lớp</h1>
+      <h1 className="text-3xl text-foreground">Danh sách học sinh</h1>
       <div className="bg-card rounded p-5 shadow space-y-6">
         <SearchForm
           dataSearch={dataSearch}
@@ -187,7 +171,7 @@ function ClassroomKey() {
         />
         <Table
           columns={columns}
-          rows={keys}
+          rows={students}
           pagination={pagination}
           defaultSortColumn={defaultValueDataSearch.sort_column}
           defaultSortType={defaultValueDataSearch.sort_type}
@@ -199,4 +183,4 @@ function ClassroomKey() {
   )
 }
 
-export default ClassroomKey
+export default ClassroomStudents

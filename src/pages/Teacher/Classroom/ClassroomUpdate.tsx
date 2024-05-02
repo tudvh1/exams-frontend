@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_TEACHER } from '@/config/routes'
 import { useLoading } from '@/contexts/loading'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
@@ -64,7 +64,7 @@ function ClassroomUpdate() {
   const debouncedFetchClassroom = useDebouncedCallback(fetchClassroom)
 
   useEffect(() => {
-    setSidebarActive(ROUTES_SITE.TEACHER.CLASSROOM.INDEX)
+    setSidebarActive(ROUTES_TEACHER.CLASSROOM.INDEX)
     debouncedFetchClassroom()
   }, [])
 

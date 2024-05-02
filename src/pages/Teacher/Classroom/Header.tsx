@@ -1,4 +1,4 @@
-import { ROUTES_SITE } from '@/config/routes'
+import { ROUTES_TEACHER } from '@/config/routes'
 import { cx } from 'class-variance-authority'
 import { Link, useParams } from 'react-router-dom'
 
@@ -13,9 +13,9 @@ function Header() {
     <ul className="flex flex-wrap text-sm font-medium text-center text-gray-500 border-b border-gray-200 dark:border-gray-700 dark:text-gray-400">
       <li className="me-2">
         <Link
-          to={ROUTES_SITE.TEACHER.CLASSROOM.UPDATE.replace(':id', id ?? '')}
+          to={ROUTES_TEACHER.CLASSROOM.UPDATE.replace(':id', id ?? '')}
           className={cx(
-            currentPath == ROUTES_SITE.TEACHER.CLASSROOM.UPDATE.replace(':id', id ?? '')
+            currentPath == ROUTES_TEACHER.CLASSROOM.UPDATE.replace(':id', id ?? '')
               ? classNameActive
               : classNameInActive,
           )}
@@ -25,9 +25,9 @@ function Header() {
       </li>
       <li className="me-2">
         <Link
-          to={ROUTES_SITE.TEACHER.CLASSROOM.STUDENTS.replace(':id', id ?? '')}
+          to={ROUTES_TEACHER.CLASSROOM.STUDENTS.replace(':id', id ?? '')}
           className={cx(
-            currentPath == ROUTES_SITE.TEACHER.CLASSROOM.STUDENTS.replace(':id', id ?? '')
+            currentPath == ROUTES_TEACHER.CLASSROOM.STUDENTS.replace(':id', id ?? '')
               ? classNameActive
               : classNameInActive,
           )}
@@ -37,9 +37,9 @@ function Header() {
       </li>
       <li className="me-2">
         <Link
-          to={ROUTES_SITE.TEACHER.CLASSROOM.KEYS.replace(':id', id ?? '')}
+          to={ROUTES_TEACHER.CLASSROOM.KEYS.replace(':id', id ?? '')}
           className={cx(
-            currentPath == ROUTES_SITE.TEACHER.CLASSROOM.KEYS.replace(':id', id ?? '')
+            currentPath == ROUTES_TEACHER.CLASSROOM.KEYS.replace(':id', id ?? '')
               ? classNameActive
               : classNameInActive,
           )}
