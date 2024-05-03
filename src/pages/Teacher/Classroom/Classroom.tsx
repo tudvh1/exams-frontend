@@ -123,6 +123,10 @@ function Classroom() {
     debouncedFetchClassrooms(dataTemp)
   }
 
+  const handleCreateClassroom = () => {
+    //
+  }
+
   useEffect(() => {
     setSidebarActive(ROUTES_TEACHER.CLASSROOM.INDEX)
     debouncedFetchClassrooms()
@@ -132,12 +136,17 @@ function Classroom() {
     <div className="space-y-8">
       <h1 className="text-3xl text-foreground">Danh sách lớp học</h1>
       <div className="bg-card rounded p-5 shadow space-y-6">
-        <SearchForm
-          dataSearch={dataSearch}
-          setDataSearch={setDataSearch}
-          onReset={resetDataSearch}
-          onSearch={search}
-        />
+        <div className="flex justify-between">
+          <SearchForm
+            dataSearch={dataSearch}
+            setDataSearch={setDataSearch}
+            onReset={resetDataSearch}
+            onSearch={search}
+          />
+          <div>
+            <Button onClick={handleCreateClassroom}>Tạo lớp</Button>
+          </div>
+        </div>
         <Table
           columns={columns}
           rows={classrooms}
