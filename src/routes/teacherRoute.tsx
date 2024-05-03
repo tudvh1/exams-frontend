@@ -4,7 +4,7 @@ import {
   Dashboard,
   Classroom,
   ClassroomUpdate,
-  ClassroomStudents,
+  ClassroomStudent,
   ClassroomKey,
 } from '@/pages/Teacher'
 
@@ -27,7 +27,7 @@ const teacherRoute = [
       },
       {
         path: ROUTES_TEACHER.CLASSROOM.STUDENTS,
-        element: <ClassroomStudents />,
+        element: <ClassroomStudent />,
       },
       {
         path: ROUTES_TEACHER.CLASSROOM.KEYS,

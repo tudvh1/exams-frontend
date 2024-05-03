@@ -10,10 +10,10 @@ import { TSetPagination, TSortOrder, TTableColumn } from '@/types'
 import { setPaginationData } from '@/utils/pagination'
 import { ClassroomSearchParams } from '@/types/teacher'
 import classroomService from '@/services/site/teacher/classroomService'
-import SearchForm from './SearchForm'
+import SearchForm from '../SearchForm'
 import { useParams } from 'react-router-dom'
 import { TStudent } from '@/types/admin'
-import Header from './Header'
+import Header from '../Header'
 import { Tooltip } from 'react-tooltip'
 import { CLASSROOM_STUDENT_LIST_OPTIONS } from '@/config/define'
 import { getValueFromObjectByKey } from '@/utils/helper'
@@ -25,7 +25,7 @@ const defaultValueDataSearch: ClassroomSearchParams = {
   sort_type: SORT_TYPE.DESC,
 }
 
-function ClassroomStudents() {
+function ClassroomStudent() {
   const { id } = useParams()
   const { setSidebarActive } = useSidebarActive()
   const { showLoading, hideLoading } = useLoading()
@@ -183,4 +183,4 @@ function ClassroomStudents() {
   )
 }
 
-export default ClassroomStudents
+export default ClassroomStudent

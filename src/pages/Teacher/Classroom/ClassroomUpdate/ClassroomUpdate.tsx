@@ -9,7 +9,7 @@ import { useParams } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { Button, Input, Select, Toast } from '@/components/ui'
 import { CLASSROOM_STATUS_LIST_OPTIONS } from '@/config/define'
-import Header from './Header'
+import Header from '../Header'
 
 function ClassroomUpdate() {
   const { id } = useParams()
