@@ -1,9 +1,10 @@
 import {
+  ClassroomCreatePayloads,
   ClassroomSearchParams,
   ClassroomStudentSearchParams,
   ClassroomUpdatePayloads,
 } from '@/types/teacher'
-import apiClient from '../index'
+import apiClient from './index'
 
 const classroomService = {
   path: '/teachers/classrooms',
@@ -17,6 +18,10 @@ const classroomService = {
   },
   async update(id: any, payloads: ClassroomUpdatePayloads) {
     const { data } = await apiClient.patch(`${this.path}/${id}`, payloads)
+    return data
+  },
+  async create(payloads: ClassroomCreatePayloads) {
+    const { data } = await apiClient.post(`${this.path}`, payloads)
     return data
   },
   async students(id: any, params: ClassroomStudentSearchParams) {
