@@ -1,15 +1,12 @@
 import { TSortOrder } from '../table'
-import { TAnswer } from './answer'
 
-export type TQuestion = {
+export type TExam = {
   id: number | null
-  question: string | null
-  level: string | null
-  type: string | null
   status: string | null
-  score: string | null
-  is_testing: boolean | null
-  answers: TAnswer[]
+  question_id: string | null
+  start_date: string | null
+  end_date: string | null
+  show_result: boolean | null
 }
 
 export type QuestionSearchParams = {
