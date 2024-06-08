@@ -17,6 +17,10 @@ export const ROUTES_SITE = {
     LOGIN_GOOGLE_CALLBACK: '/auth/google/callback',
   },
   HOME: '/',
+  CLASROOM: {
+    INDEX: '/classroom/:classroomId',
+    EXAM: '/classroom/:classroomId/exams/:id',
+  },
 }
 
 export const ROUTES_TEACHER = {

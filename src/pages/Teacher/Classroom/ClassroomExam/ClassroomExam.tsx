@@ -1,27 +1,20 @@
 import { useEffect, useState } from 'react'
-import { Alert, Badge, Button, Table, Toast } from '@/components/ui'
-import {
-  CLASSROOM_KEY_LIST_OPTIONS,
-  ClassroomKeyStatus,
-  DEFAULT_PAGINATION_OBJECT,
-  SORT_TYPE,
-} from '@/config/define'
+import { Button, Table } from '@/components/ui'
+import { DEFAULT_PAGINATION_OBJECT, SORT_TYPE } from '@/config/define'
 import { ROUTES_TEACHER } from '@/config/routes'
 import { useLoading } from '@/contexts/loading'
 import { useSidebarActive } from '@/contexts/sidebarActive'
 import { useDebouncedCallback } from '@/hooks/useDebouncedCallback'
 import useHandleError from '@/hooks/useHandleError'
-import { TSetPagination, TSortOrder, TTableColumn } from '@/types'
+import { TSetPagination, TTableColumn } from '@/types'
 import { setPaginationData } from '@/utils/pagination'
 import { ClassroomSearchParams } from '@/types/teacher'
-import classroomService from '@/services/teacher/classroomService'
-import SearchForm from './SearchForm'
 import { useParams } from 'react-router-dom'
 import Header from '../Header'
-import { getValueFromObjectByKey } from '@/utils/helper'
-import { TClassroomKey } from '@/types/teacher/classroomKey'
 import { Drawer } from 'antd'
 import CreateForm from './CreateForm'
+import examService from '@/services/teacher/examService'
+import { TExam } from '@/types/teacher/exam'
 
 const defaultValueDataSearch: ClassroomSearchParams = {
   name: '',
@@ -35,7 +28,7 @@ function ClassroomExam() {
   const { setSidebarActive } = useSidebarActive()
   const { showLoading, hideLoading } = useLoading()
   const { handleResponseError } = useHandleError()
-  const [keys, setKeys] = useState<TClassroomKey[]>([])
+  const [exams, setExams] = useState<TExam[]>([])
   const [pagination, setPagination] = useState<TSetPagination>(DEFAULT_PAGINATION_OBJECT)
   const [dataSearch, setDataSearch] = useState(defaultValueDataSearch)
   const [openFormAdd, setOpenFormAdd] = useState(false)
@@ -52,50 +45,38 @@ function ClassroomExam() {
       sortable: true,
     },
     {
-      headerName: 'Mã',
-      field: 'key',
-    },
-    {
-      headerName: 'Số lượng',
-      field: 'quantity',
+      headerName: 'Thời gian làm bài',
+      field: 'working_time',
       sortable: true,
     },
     {
-      headerName: 'Còn lại',
-      field: 'remaining',
-      sortable: true,
+      headerName: 'Ngày bắt đầu',
+      field: 'start_date',
     },
     {
-      headerName: 'Trạng thái',
-      field: 'status',
-      sortable: true,
-      valueGetter: row => {
-        const status = getValueFromObjectByKey(CLASSROOM_KEY_LIST_OPTIONS, 'value', row.status)
-        return <Badge className={status?.badgeColor}>{status.name}</Badge>
-      },
+      headerName: 'Ngày kết thúc',
+      field: 'end_date',
     },
     {
-      headerName: 'Hành động',
-      field: 'status',
-      valueGetter: row =>
-        row.status === ClassroomKeyStatus.Active ? (
-          <Button className="bg-red-600 hover:bg-red-700" onClick={() => handleBlockKey(row)}>
-            <i className="fa-solid fa-lock-keyhole"></i>
-          </Button>
-        ) : (
-          <Button onClick={() => handleActiveKey(row)}>
-            <i className="fa-solid fa-lock-keyhole-open"></i>
-          </Button>
-        ),
+      headerName: 'Câu hỏi dễ',
+      field: 'number_question_easy',
+    },
+    {
+      headerName: 'Câu hỏi trung bình',
+      field: 'number_question_medium',
+    },
+    {
+      headerName: 'Câu hỏi khó',
+      field: 'number_question_hard',
     },
   ]
 
-  const fetchClassroomKeys = (params?: any) => {
+  const fetchExams = () => {
     showLoading()
-    classroomService
-      .keys(id, params)
+    examService
+      .getList(id)
       .then(({ data, meta }) => {
-        setKeys(data)
+        setExams(data)
         setPagination(setPaginationData(meta ?? DEFAULT_PAGINATION_OBJECT))
       })
       .catch(err => {
@@ -105,80 +86,20 @@ function ClassroomExam() {
         hideLoading()
       })
   }
-  const debouncedFetchClassroomKeys = useDebouncedCallback(fetchClassroomKeys)
+  const debouncedFetchExams = useDebouncedCallback(fetchExams)
 
   const handleChangePage = (selected: number) => {
     setPagination({ ...pagination, currentPage: selected })
-    debouncedFetchClassroomKeys({ page: selected })
+    debouncedFetchExams({ page: selected })
   }
 
-  const search = () => {
-    debouncedFetchClassroomKeys({ ...dataSearch, page: 1 })
-  }
-
-  const resetDataSearch = () => {
-    setDataSearch(defaultValueDataSearch)
-    debouncedFetchClassroomKeys()
-  }
-
-  const sort = (dataSort: TSortOrder) => {
-    const dataTemp = { ...dataSearch, ...dataSort }
-    setDataSearch(dataTemp)
-    debouncedFetchClassroomKeys(dataTemp)
-  }
-
-  const handleBlockKey = async (key: TClassroomKey) => {
-    const check = await Alert.confirm(
-      `Bạn có nhưng hoạt động khóa ${key.name} không?`,
-      'Có',
-      'Không',
-    )
-    if (!check) {
-      return
-    }
-
-    showLoading()
-    classroomService
-      .keyBlock(id, key.id)
-      .then(() => {
-        Toast.success('Vô hiệu hóa khóa thành công')
-        debouncedFetchClassroomKeys()
-      })
-      .catch(err => {
-        handleResponseError(err)
-      })
-      .finally(() => {
-        hideLoading()
-      })
-  }
-
-  const handleActiveKey = async (key: TClassroomKey) => {
-    const check = await Alert.confirm(`Bạn có muốn mở khóa ${key?.name} không?`, 'Có', 'Không')
-    if (!check) {
-      return
-    }
-    showLoading()
-    classroomService
-      .keyActive(id, key.id)
-      .then(() => {
-        Toast.success('Mở key thành công')
-        debouncedFetchClassroomKeys()
-      })
-      .catch(err => {
-        handleResponseError(err)
-      })
-      .finally(() => {
-        hideLoading()
-      })
-  }
-
-  const handleCreateKey = () => {
+  const handleCreateExam = () => {
     setOpenFormAdd(true)
   }
 
   useEffect(() => {
     setSidebarActive(ROUTES_TEACHER.CLASSROOM.INDEX)
-    debouncedFetchClassroomKeys()
+    debouncedFetchExams()
   }, [])
 
   return (
@@ -187,26 +108,19 @@ function ClassroomExam() {
       <h1 className="text-3xl text-foreground">Danh sách cuộc thi</h1>
       <div className="bg-card rounded p-5 shadow space-y-6">
         <div className="flex justify-end">
-          <Button onClick={handleCreateKey}>Tạo cuộc thi</Button>
+          <Button onClick={handleCreateExam}>Tạo cuộc thi</Button>
         </div>
-        <SearchForm
-          dataSearch={dataSearch}
-          setDataSearch={setDataSearch}
-          onReset={resetDataSearch}
-          onSearch={search}
-        />
         <Table
           columns={columns}
-          rows={keys}
+          rows={exams}
           pagination={pagination}
           defaultSortColumn={defaultValueDataSearch.sort_column}
           defaultSortType={defaultValueDataSearch.sort_type}
-          onSort={sort}
           handleChangePage={selected => handleChangePage(selected)}
         />
       </div>
       <Drawer
-        title="Tạo lớp mã vào lớp"
+        title="Tạo cuộc thi"
         width={720}
         onClose={() => setOpenFormAdd(false)}
         open={openFormAdd}
@@ -219,8 +133,9 @@ function ClassroomExam() {
         <CreateForm
           showLoading={showLoading}
           hideLoading={hideLoading}
-          debouncedFetchClassroomKeys={debouncedFetchClassroomKeys}
+          debouncedFetchExams={debouncedFetchExams}
           dataSearch={dataSearch}
+          setDataSearch={setDataSearch}
           setOpenFormAdd={setOpenFormAdd}
         />
       </Drawer>

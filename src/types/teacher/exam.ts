@@ -2,11 +2,12 @@ import { TSortOrder } from '../table'
 
 export type TExam = {
   id: number | null
-  status: string | null
-  question_id: string | null
+  name: string | null
   start_date: string | null
   end_date: string | null
-  show_result: boolean | null
+  number_question_hard: number | null
+  number_question_medium: number | null
+  number_question_easy: number | null
 }
 
 export type QuestionSearchParams = {

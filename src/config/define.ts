@@ -25,6 +25,7 @@ export const DATE_FORMAT = {
   DATE_DASH_REGISTER: 'yyyy-mm-dd',
   DATE_SLASH: 'yyyy/MM/dd',
   DATE_TIME_DASH: 'YYYY-MM-DD HH:mm:ss',
+  TIME_DASH: 'HH:mm:ss',
 }
 
 export const ROLE = {
